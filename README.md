@@ -1,3 +1,29 @@
+IMPORTANT:
+
+1. That Singularity is now in a shared location (/hpc/apps/singularity/images). To use it, edit workflow_opts/singularity.json .
+
+Change the line 
+
+"singularity_container" : "~/.singularity/chip-seq-pipeline-v1.1.6.simg"
+
+to
+
+ "singularity_container" : "/hpc/apps/singularity/images/chip-seq-pipeline-v1.1.6.simg"
+ 
+ 2. If your users want to try the test samples suggested on the chip-seq-pipelin2 SGE tutorial page, they'll want to use either SGE singularity script, then make the following changes to the script.
+
+1) Around line 7 or 8, add a "#$ -cwd" to deposit job output in the directory the job is submitted from
+2) After the "module load java" line, add "module load singularity/2.5.2"
+3) After "module load singularity/2.5.2", add the line "CROMWELL='/hpc/apps/cromwell/34/lib/cromwell.jar'"
+4) Change the word "shm" to "smp" everywhere in the script
+5) In the line at the end of the file, change "$HOME/cromwell-34.jar" to "$CROMWELL"
+
+The file "test_genome_database/hg38_chr19_chrM_local.tsv refers to a non-existent file "test_genome_database/hg38_chr19_chrM/hg38.chrom.sizes". Either change the filename to "hg38_chr19_chrM.chrom.sizes", or copy test_genome_database/hg38_chr19_chrM/hg38_chr19_chrM.chrom.sizes to test_genome_database/hg38_chr19_chrM/hg38.chrom.sizes.
+
+3. there are example JSON and batch files in example_HPC folder
+
+
+
 # ENCODE Transcription Factor and Histone ChIP-Seq processing pipeline
 
 [![CircleCI](https://circleci.com/gh/ENCODE-DCC/chip-seq-pipeline2/tree/master.svg?style=svg)](https://circleci.com/gh/ENCODE-DCC/chip-seq-pipeline2/tree/master)
