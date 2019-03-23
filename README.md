@@ -22,6 +22,15 @@ The file "test_genome_database/hg38_chr19_chrM_local.tsv refers to a non-existen
 
 3. there are example JSON and batch files in example_HPC folder
 
+4. for long paired-end reads, we should use "bwa mem" for the alignment. The command line is shown below:
+
+/common/genomics-core/anaconda2/bin/bwa mem -M -t 10 /home/wangyiz/genomics/apps/chip-seq-pipeline2/genome/GRCh38/GRCh38_no_alt_analysis_set_GCA_000001405.15.fasta ./$1_R1.fastq.gz ./$1_R2.fastq.gz > $1.sam ###The reference genome should be the one used in the pipeline, be careful for the parameter setting.
+
+samtools view -b -S $1.sam > $1.bam
+
+samtools sort --output-fmt BAM -@ 10 -n -o $1.sorted.bam $1.bam  ### bam could be used as input for the pipeline
+
+
 
 
 # ENCODE Transcription Factor and Histone ChIP-Seq processing pipeline
